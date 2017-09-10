@@ -30,7 +30,7 @@ namespace SMA17Pr2 {
 			dest = repoPath + proj_di.Name;
 			if (!projExists(dest))
 				Directory.CreateDirectory(dest);
-			_copyDirectory(dest, proj, true);
+			_copyDirectory(proj, dest, true);
 			return true;
 		}
 
@@ -47,21 +47,25 @@ namespace SMA17Pr2 {
 			}
 		}
 
-		private void _copyDirectory(string dest, string source, bool subs) {
-			string temp_path;
-			string temp_dir_path;
+		private void _copyDirectory(string source, string dest, bool doSubs) {
+			string tempPath;
+			DirectoryInfo sourceDir;
+			DirectoryInfo[] sourceSubDirs;
+			FileInfo[] sourceFiles;
 
-			DirectoryInfo source_di = new DirectoryInfo(source);
-			DirectoryInfo[] source_subdirs = source_di.GetDirectories();
-			FileInfo[] source_files = source_di.GetFiles();
-			foreach (var file in source_files) {
-				temp_path = Path.Combine(dest, file.Name);
-				file.CopyTo(temp_path, true);
+			if (!Directory.Exists(dest))
+				Directory.CreateDirectory(dest);
+			sourceDir = new DirectoryInfo(source);
+			sourceSubDirs = sourceDir.GetDirectories();
+			sourceFiles = sourceDir.GetFiles();
+			foreach(FileInfo file in sourceFiles) {
+				tempPath = Path.Combine(dest, file.Name);
+				file.CopyTo(tempPath, true);
 			}
-			if (subs) {
-				foreach (var sub_dir in source_subdirs) {
-					temp_dir_path = Path.Combine(dest, sub_dir.Name);
-					_copyDirectory(temp_dir_path, sub_dir.FullName, subs);
+			if (doSubs) {
+				foreach(DirectoryInfo sub in sourceSubDirs) {
+					tempPath = Path.Combine(dest, sub.Name);
+					_copyDirectory(sub.FullName, tempPath, doSubs);
 				}
 			}
 		}
