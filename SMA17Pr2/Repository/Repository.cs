@@ -7,7 +7,7 @@ using System.IO;
 namespace SMA17Pr2 {
 	public class Repository {
 
-		//public
+	//public
 		public string repoPath { get; private set; }
 
 		public Repository(string rp) {
@@ -32,7 +32,7 @@ namespace SMA17Pr2 {
 		}
 
 
-		//private
+	//private
 		private void _loadProjects() {
 			foreach (var d in Directory.GetDirectories(repoPath)) {
 				DirectoryInfo di = new DirectoryInfo(d);
@@ -45,14 +45,25 @@ namespace SMA17Pr2 {
 				Directory.CreateDirectory(path);
 		}
 
-
 		private List<string> _projects;
 
-		static void Main(string[] args) {
 
+
+	//main
+		static void Main(string[] args) {
+			string user, appBase, repoPath, testProj;
+			user = "";
+			if (!directory_utils.getUser(ref user)) {
+				Console.WriteLine("error on getUser");
+				return;
+			}
+			appBase = @"/Users/" + user + @"/Projects/SMA17Pr2.git/";
+			//appBase = @"C:\Users\" + user + @"\source\repos\SMA17Pr2\";
+			repoPath = appBase + @"repository/";
+			testProj = appBase + @"./test_project/";
+
+			Repository repo = new Repository(repoPath);
+			repo.storeProject(testProj);
 		}
 	}
-
-
-	
 }
