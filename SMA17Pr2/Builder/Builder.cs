@@ -35,7 +35,10 @@ namespace SMA17Pr2 {
 				Console.WriteLine("error pulling repository");
 				return false;
 			}
-			_compile(solPath, );
+			if (!_compile(solPath)) {
+				Console.WriteLine("error compiling project");
+				return false;
+			}
 			return true;
 		}
 
@@ -62,38 +65,53 @@ namespace SMA17Pr2 {
 			return true;
 		}
 
-		private void _compile(string solPath, ref string output) {
-			Project p;
-			Microsoft.Build.BuildEngine.FileLogger log = new FileLogger();
+		private bool _compile(string solPath) {
+			//Project p;
+			//Microsoft.Build.BuildEngine.FileLogger log = new FileLogger();
 
-			Microsoft.Build.BuildEngine.Engine.GlobalEngine.BuildEnabled = true;
-			p = new Project(Microsoft.Build.BuildEngine.Engine.GlobalEngine);
-			p.BuildEnabled = true;
-			p.Load(solPath);
-			p.Build();
+			////Microsoft.Build.Evaluation.ProjectCollection
+			//Microsoft.Build.BuildEngine.Engine.GlobalEngine.BuildEnabled = true;
+			//p = new Project(Microsoft.Build.BuildEngine.Engine.GlobalEngine);
+			//p.BuildEnabled = true;
+			//try {
+			//	p.Load(solPath);
+			//}
+			//catch (Exception e) {
+			//	Console.WriteLine(e.Message);
+			//	return false;
+			//}
+			//p.Build();
+			//return true;
+			List<ILogger> loggers = new List<ILogger>();
+			loggers.Add(new ConsoleLogger());
+			var projectCollection = new Microsoft.Build.Evaluation.ProjectCollection();
+			projectCollection.RegisterLoggers(loggers);
+			var project = projectCollection.LoadProject(buildFileUri); // Needs a reference to System.Xml
+			try {
+				project.Build();
+			}
+			finally {
+				projectCollection.UnregisterAllLoggers();
+			}
 		}
 
 		private string _buildServer { get; set; }
 		private string _repoPath { get; set; }
 		
 		static void Main(string[] args) {
-			string appBase, user, name, localProj, repoPath;
-			user = "";
-			if (!directory_utils.getUser(ref user)) {
-				Console.WriteLine("error on getUser");
-				return;
-			}
-			appBase = @"/Users/" + user + @"/Projects/SMA17Pr2.git/";
-			//appBase = @"C:\Users\" + user + @"\source\repos\SMA17Pr2\";
+			string appBase, name, testProj, repoPath;
+			Builder b;
+
 			name = @"build_server";
-			localProj = @"test_project";
-			repoPath = appBase + @"repository/";
-			Builder b = new Builder(appBase, name, repoPath);
+			appBase = Path.GetFullPath(@"../../../../");
+			repoPath = Path.Combine(appBase, @"repository");
+			testProj = @"test_project";
+			b = new Builder(appBase, name, repoPath);
 			if (!b.init()) {
 				Console.WriteLine("error in Builder.init");
 				return;
 			}
-			b.runBuild(localProj);
+			b.runBuild(testProj);
 
 		}
 	}

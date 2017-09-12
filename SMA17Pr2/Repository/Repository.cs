@@ -20,7 +20,7 @@ namespace SMA17Pr2 {
 		public bool storeProject(string proj) {
 			string dest;
 			DirectoryInfo proj_di = new DirectoryInfo(proj);
-			dest = repoPath + proj_di.Name;
+			dest = Path.Combine(repoPath, proj_di.Name);
 			if (!projExists(dest))
 				Directory.CreateDirectory(dest);
 			directory_utils._copyDirectory(proj, dest, true);
@@ -48,19 +48,13 @@ namespace SMA17Pr2 {
 		private List<string> _projects;
 
 
-
-	//main
+		
 		static void Main(string[] args) {
-			string user, appBase, repoPath, testProj;
-			user = "";
-			if (!directory_utils.getUser(ref user)) {
-				Console.WriteLine("error on getUser");
-				return;
-			}
-			appBase = @"/Users/" + user + @"/Projects/SMA17Pr2.git/";
-			//appBase = @"C:\Users\" + user + @"\source\repos\SMA17Pr2\";
-			repoPath = appBase + @"repository/";
-			testProj = appBase + @"./test_project/";
+			string appBase, repoPath, testProj;
+			appBase = Path.GetFullPath(@"../../../../");
+			repoPath = Path.Combine(appBase, @"repository");
+			testProj = Path.Combine(appBase, @"test_project");
+
 
 			Repository repo = new Repository(repoPath);
 			repo.storeProject(testProj);
