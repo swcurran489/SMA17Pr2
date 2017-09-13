@@ -50,6 +50,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Builder\Builder.csproj">
+      <Project>{e3978b7b-fade-46fe-8564-3baa2da9c527}</Project>
+      <Name>Builder</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Repository\Repository.csproj">
       <Project>{60fa1444-6eac-490b-a9a8-fedf9c01e994}</Project>
       <Name>Repository</Name>

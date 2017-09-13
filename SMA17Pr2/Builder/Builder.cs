@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Construction;
+using Microsoft.Build.Evaluation;
+using Microsoft.Build.Execution;
+using Microsoft.Build.Logging;
 using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
 
 namespace SMA17Pr2 {
 	public class Builder {
@@ -45,7 +47,7 @@ namespace SMA17Pr2 {
 
 		//private
 
-		private bool _pullRepository(string projName, ref string solPath) {
+		private bool _pullRepository(string projName, ref string solnPath) {
 			string localPath, projPath, solFile, t;
 			DirectoryInfo repoDI;
 
@@ -61,38 +63,22 @@ namespace SMA17Pr2 {
 			solFile = Path.Combine(localPath, t);
 			if (!File.Exists(solFile))
 				return false;
-			solPath = solFile;
+			solnPath = solFile;
 			return true;
 		}
 
-		private bool _compile(string solPath) {
-			//Project p;
-			//Microsoft.Build.BuildEngine.FileLogger log = new FileLogger();
+		private bool _compile(string solnPath) {
+			var props = new Dictionary<string, string>();
+			ConsoleLogger l = new ConsoleLogger();
+			List<ILogger> logs = new List<ILogger>();
+			logs.Add(l);
+			props["Configuration"] = "Release";
+			BuildRequestData request = new BuildRequestData(solnPath, props, null, new string[] { "Build" }, null);
+			var buildParams = new BuildParameters();
+			buildParams.Loggers = logs;
 
-			////Microsoft.Build.Evaluation.ProjectCollection
-			//Microsoft.Build.BuildEngine.Engine.GlobalEngine.BuildEnabled = true;
-			//p = new Project(Microsoft.Build.BuildEngine.Engine.GlobalEngine);
-			//p.BuildEnabled = true;
-			//try {
-			//	p.Load(solPath);
-			//}
-			//catch (Exception e) {
-			//	Console.WriteLine(e.Message);
-			//	return false;
-			//}
-			//p.Build();
-			//return true;
-			List<ILogger> loggers = new List<ILogger>();
-			loggers.Add(new ConsoleLogger());
-			var projectCollection = new Microsoft.Build.Evaluation.ProjectCollection();
-			projectCollection.RegisterLoggers(loggers);
-			var project = projectCollection.LoadProject(buildFileUri); // Needs a reference to System.Xml
-			try {
-				project.Build();
-			}
-			finally {
-				projectCollection.UnregisterAllLoggers();
-			}
+			var result = BuildManager.DefaultBuildManager.Build(buildParams, request);
+			return result.OverallResult == BuildResultCode.Success;
 		}
 
 		private string _buildServer { get; set; }

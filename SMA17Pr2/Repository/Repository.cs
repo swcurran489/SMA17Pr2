@@ -10,10 +10,10 @@ namespace SMA17Pr2 {
 	//public
 		public string repoPath { get; private set; }
 
-		public Repository(string rp) {
-			repoPath = rp;
+		public Repository(string path) {
+			repoPath = path;
 			_projects = new List<string>();
-			_makeRepo(rp);
+			_makeRepo(path);
 			_loadProjects();
 		}
 		
