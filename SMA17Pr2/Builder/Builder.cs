@@ -32,13 +32,15 @@ namespace SMA17Pr2 {
 
 		public bool runBuild(string projName) {
 			string solPath = "";
+			BuildResult result = new BuildResult();
 
 			if (!_pullRepository(projName, ref solPath)) {
 				Console.WriteLine("error pulling repository");
 				return false;
 			}
-			if (!_compile(solPath)) {
+			if (!_compile(solPath, ref result)) {
 				Console.WriteLine("error compiling project");
+				Console.WriteLine(result.Exception);
 				return false;
 			}
 			return true;
@@ -67,17 +69,17 @@ namespace SMA17Pr2 {
 			return true;
 		}
 
-		private bool _compile(string solnPath) {
+		private bool _compile(string solnPath, ref BuildResult result) {
 			var props = new Dictionary<string, string>();
-			ConsoleLogger l = new ConsoleLogger();
+			ConsoleLogger l = new ConsoleLogger();// { Verbosity = LoggerVerbosity.Detailed };
 			List<ILogger> logs = new List<ILogger>();
 			logs.Add(l);
 			props["Configuration"] = "Release";
-			BuildRequestData request = new BuildRequestData(solnPath, props, null, new string[] { "Build" }, null);
+			BuildRequestData request = new BuildRequestData(solnPath, props, "4.0", new string[] { "Build" }, null);
 			var buildParams = new BuildParameters();
 			buildParams.Loggers = logs;
 
-			var result = BuildManager.DefaultBuildManager.Build(buildParams, request);
+			result = BuildManager.DefaultBuildManager.Build(buildParams, request);
 			return result.OverallResult == BuildResultCode.Success;
 		}
 
