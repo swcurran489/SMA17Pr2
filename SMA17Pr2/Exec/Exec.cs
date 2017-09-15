@@ -11,7 +11,7 @@ namespace SMA17Pr2 {
 			string appBase, repoPath, testProj, builderName, testProjPath;
 			appBase = Path.GetFullPath(@"../../../../");
 			repoPath = Path.Combine(appBase, @"repository");
-			testProj = "test_project";
+			testProj = "herpderp";
 			testProjPath = Path.Combine(appBase, testProj);
 			builderName = @"build_server";
 			Repository r = new Repository(repoPath);
