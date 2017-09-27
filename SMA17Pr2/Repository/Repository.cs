@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Xml;
 
 namespace SMA17Pr2 {
 	public class Repository {
 
 	//public
 		public string repoPath { get; private set; }
+		public string builderPath { get; private set; }
 
-		public Repository(string path) {
+		public Repository(string path, string _builderPath) {
 			repoPath = path;
+			builderPath = _builderPath;
 			_projects = new List<string>();
 			_makeRepo(path);
 			_loadProjects();
@@ -29,6 +32,19 @@ namespace SMA17Pr2 {
 
 		public bool projExists(string name) {
 			return Directory.Exists(name);
+		}
+
+		public bool createTestRequest(string project) {
+			XmlDocument request;
+			string requestString;
+			string savePath;
+
+			request = new XmlDocument();
+			requestString = "<request><test name='" + project + "' /></request>";
+			savePath = Path.Combine(builderPath, "request.xml");
+			request.LoadXml(requestString);
+			request.Save(savePath);
+			return true;
 		}
 
 
@@ -56,7 +72,7 @@ namespace SMA17Pr2 {
 			testProj = Path.Combine(appBase, @"test_project");
 
 
-			Repository repo = new Repository(repoPath);
+			Repository repo = new Repository(repoPath, "");
 			repo.storeProject(testProj);
 		}
 	}
