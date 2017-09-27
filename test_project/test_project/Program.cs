@@ -5,9 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace test_project {
-	class Program {
+	public class Program {
+
+		public int test() {
+			return 1;
+		}
+
 		static void Main(string[] args) {
-			Console.WriteLine("this is a text project")
+			
 		}
 	}
 }
