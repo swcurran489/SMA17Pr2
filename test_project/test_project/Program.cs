@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 namespace test_project {
 	class Program {
 		static void Main(string[] args) {
-			Console.WriteLine("this is a text project");
-			asdfasdfasdfasdf
+			Console.WriteLine("this is a text project")
 		}
 	}
 }

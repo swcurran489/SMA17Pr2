@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "herpderp", "herpderp\herpderp.csproj", "{7D5A9A0D-0106-476B-B552-FC54152B2ABB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "herpderp_UT", "herpderp_UT\herpderp_UT.csproj", "{2DE66B68-A3F7-4CAA-AB47-68754E0CA8BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -13,5 +15,9 @@ Global
 		{7D5A9A0D-0106-476B-B552-FC54152B2ABB}.Debug|x86.Build.0 = Debug|x86
 		{7D5A9A0D-0106-476B-B552-FC54152B2ABB}.Release|x86.ActiveCfg = Release|x86
 		{7D5A9A0D-0106-476B-B552-FC54152B2ABB}.Release|x86.Build.0 = Release|x86
+		{2DE66B68-A3F7-4CAA-AB47-68754E0CA8BD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2DE66B68-A3F7-4CAA-AB47-68754E0CA8BD}.Debug|x86.Build.0 = Debug|Any CPU
+		{2DE66B68-A3F7-4CAA-AB47-68754E0CA8BD}.Release|x86.ActiveCfg = Release|Any CPU
+		{2DE66B68-A3F7-4CAA-AB47-68754E0CA8BD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
